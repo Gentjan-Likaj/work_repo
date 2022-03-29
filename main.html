@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"> </script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="http://fonts.cdnfonts.com/css/cpmonov07" rel="stylesheet">
+    <lottie-player class="animation" src="https://assets9.lottiefiles.com/packages/lf20_x3xqpqar.json"
+        background="transparent" speed="0.5" style="width: 400px; height: 390px;" loop autoplay></lottie-player>
+</head>
+
+<body>
+    <h2 class="h1 center col">Insert the text and the separator and press the button: </h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10" id="top-items">
+                <div class="div4"><input placeholder="Separator (Tab default)" type="text" autocomplete="off" name="sep"
+                        id="sep" value="	">
+                    <textarea name="text" id="text" cols="120" rows="4"
+                        placeholder="ColummnName1,ColummName2,ColummName3,ColummName4,............"></textarea>
+                </div>
+                <input type="button" value="Convert to Table" id="btn1" class="btn btn-primary">
+            </div>
+            <div class="col-md-3">
+
+            </div>
+        </div>
+        <div class="row1">
+            <div class="col-xs-12">
+
+            </div>
+        </div>
+
+        <div class="row2">
+            <div class="col-xs-12 col-md-7 card" id="btn-convert">
+                <div class="btn_con">
+                    <input type="button" value="Convert to Avro" class="btn btn-success" id="btn2">
+                    <input type="button" value="Convert to SQL Create" class="btn btn-info" id="btn3">
+                </div>
+                <div id="table"></div>
+            </div>
+            <div class="col-md-6">
+                <div class=" card" id="card1">
+                    <div class="card-header font-weight-bolder">Avro Format</div>
+                    <div class="card-body textarea text-muted" id='avro' type="textarea">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class=" card" id="card2">
+                    <div class="card-header font-weight-bolder">SQL Create Table</div>
+                    <button id="button1" onclick="copyDivToClipboard()">Click to copy</button>
+                    <div class="card-body" id='sql'>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<style>
+    body {
+        background: rgb(42, 41, 43);
+
+    }
+
+    .animation {
+        position: absolute;
+        left: 11vh;
+    }
+
+
+
+    .row2 {
+        display: flex;
+        height: 60vh;
+        text-align: center;
+        justify-content: center;
+
+    }
+
+    textarea {
+        width: 80%;
+        height: 30%;
+        background: rgb(52, 51, 53);
+        border: none;
+        border-bottom: 1px solid rgb(212, 212, 212);
+        color: white;
+        outline: none;
+        display: block;
+        resize: both;
+        resize: vertical;
+        transition: all 0.3s;
+        -webkit-transition: all 0.3s;
+    }
+
+
+    textarea:focus:not([readonly]) {
+
+        border-bottom: 2px solid rgb(18, 144, 205);
+        box-shadow: 1px rgb(18, 144, 205);
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    input {
+        width: 34%;
+        background: rgb(52, 51, 53);
+        color: white;
+        border: none;
+        border-bottom: 1px solid rgb(214, 215, 216);
+        outline: none;
+        transition: all 0.2s;
+        -webkit-transition: all 0.2s;
+
+    }
+
+    input:focus {
+        border-bottom: 2px solid rgb(18, 144, 205);
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+
+    }
+
+    #top-items {
+        position: relative;
+        left: 16vh;
+        justify-content: center;
+        padding-bottom: 1vh;
+
+    }
+
+    #sep {
+        width: 80%;
+        height: 4vh;
+
+    }
+
+    #btn-convert {
+        display: inline;
+        background: rgb(52, 51, 53);
+        color: white;
+        border: 2px solid;
+        border-color: rgb(18, 144, 205);
+
+    }
+
+    .div4 {
+
+        color: white;
+        white-space: break-spaces;
+        margin-top: 5vh;
+
+
+    }
+
+    .table {
+        color: white;
+    }
+
+    #table {
+        height: 90%;
+        color: white;
+        overflow: auto;
+    }
+
+
+    #card1 {
+        height: 100%;
+        background: rgb(52, 51, 53);
+        color: white;
+        border: 2px solid;
+        border-color: rgb(18, 144, 205);
+        overflow: auto;
+    }
+
+    #card2 {
+        height: 100%;
+        background: rgb(52, 51, 53);
+        color: white;
+        border: 2px solid;
+        border-color: rgb(18, 144, 205);
+        overflow: auto;
+
+    }
+
+    .card-body {
+        text-align: left;
+    }
+
+
+    #btn3 {
+        background: transparent;
+        color: white;
+        border: 2px solid rgb(18, 144, 205);
+        border-radius: 3px;
+    }
+
+    #btn2 {
+        background: transparent;
+        color: white;
+        border: 2px solid rgb(18, 144, 205);
+        border-radius: 3px;
+    }
+
+    .btn_con {
+        margin-top: 1vh;
+        margin-bottom: 1vh;
+
+    }
+
+    #button1 {
+        width: 80%;
+        background: transparent;
+        color: white;
+        border: 2px solid rgb(18, 144, 205);
+        border-radius: 3px;
+        align-self: center;
+    }
+
+    #btn1 {
+        width: 50%;
+        border: 2px solid rgb(18, 144, 205);
+        position: relative;
+        left: 12vh;
+
+
+    }
+
+    #button1:hover {
+        background: rgb(18, 144, 205);
+        border-color: rgb(18, 144, 205);
+    }
+
+    #btn2:hover {
+        background: rgb(18, 144, 205);
+        border-color: rgb(18, 144, 205);
+    }
+
+
+
+    #btn3:hover {
+        background: rgb(18, 144, 205);
+        border-color: rgb(18, 144, 205);
+
+    }
+
+
+
+
+    .h1,
+    h1 {
+        font-size: 2rem;
+        text-align-last: center;
+        color: rgb(18, 144, 205);
+        font-family: 'CPMono_v07 Light', sans-serif;
+
+    }
+</style>
+
+
+
+<script>$("#btn1").click(function () {
+        $("table").remove();
+        var text1 = document.getElementById('text').value;
+        var text1 = text1.replace(/(\r\n|\n|\r)/gm, "");
+        var sep = document.getElementById('sep').value;
+        var aray = text1.split(sep);
+        var formato = '<select class="form"><option value="string">string</option><option value="int">int</option><option value="date">date</option><option value="datetime">datetime</option><option value="float">float</option><option value="varchar(50)">varchar</option><option value="timestamp">timestamp</option></select>';
+        var univoco = '<input id="checkbox_unique" type="checkbox" name="univoco" value="false" > <br>';
+        var null1 = '<input id="null" class="null11" type="checkbox" name="univoco" value="null" checked> <br>';
+        var html = '<table id="tbl" class="table table-sm  table-striped table-centered .thead-dark "><thead class="thead-dark"><tr class="table-primary"><th scope="col">ColummnName</th><th scope="col">Format</th>  <th scope="col">Null</th> <th scope="col">Univoco</th>    </tr>  </thead> <tbody>';
+        $.each(aray, function (i, val) {
+            html += '<tr><td id = "val">' + val + '</td><td id = "form">' + formato + '</td><td id = "nul">' + null1 + '</td><td id = "unique">' + univoco + '</td></tr>';
+        });
+        html += '</tbody></table>';
+        $("#table").append(html);
+    });
+
+    $("#btn2").click(function () {
+        $("#avro").empty();
+        var myRows = { myRows: [] };
+        var $th = $('#tbl th');
+        $('#tbl tbody tr').each(function (i, tr) {
+            var obj = {},
+                $tds = $(tr).find('td');
+            $td1 = $(tr).find('select.form').children("option:selected");
+            $tds2 = $(tr).find('#checkbox');
+            $tds3 = $(tr).find('#null');
+            $th.each(function () {
+                obj['name'] = $tds.eq(0).text();
+                var type = $td1.eq(0).val();
+                var nullv = $tds3.eq(0).is(':checked');
+                if (type == 'date') {
+                    type = { type: "int", logicalType: "date" };
+                } else if (nullv == true) {
+                    type = [type, 'null'];
+                }
+                else {
+                    type;
+                }
+                obj['type'] = type;
+                // obj['univoco'] = $tds2.eq(0).is(':checked');
+                // obj['null'] = $tds3.eq(0).is(':checked');
+            });
+            myRows.myRows.push(obj);
+        });
+        console.log(JSON.stringify(myRows));
+        var header = '{ <br> &nbsp &nbsp "type": "record"  ,  <br>   &nbsp &nbsp "namespace": "Mezzora" ,  <br>  &nbsp &nbsp "name": "ReportDSL" ,  <br>   &nbsp &nbsp  "fields": [ <br>';
+        $('#avro').append(header);
+        text = '&nbsp &nbsp &nbsp &nbsp &nbsp ' + JSON.stringify(myRows.myRows[0]) + "<br>";
+        $('#avro').append(text);
+        var i;
+        for (i = 1; i < myRows.myRows.length; i++) {
+            text = '&nbsp &nbsp &nbsp &nbsp &nbsp  ,' + JSON.stringify(myRows.myRows[i]) + "<br>";
+            $('#avro').append(text);
+        }
+        var footer = '&nbsp &nbsp &nbsp &nbsp  ] <br> }';
+        $('#avro').append(footer);
+    });
+
+    $("#btn3").click(function () {
+        $("#sql").empty();
+        var myRows = { myRows: [] };
+        var unique = [];
+        var $th = $('#tbl th');
+        $('#tbl tbody tr').each(function (i, tr) {
+            var obj = {},
+                $tds = $(tr).find('td');
+            $td1 = $(tr).find('select.form').children("option:selected");
+            $tds2 = $(tr).find('#checkbox_unique');
+            $tds3 = $(tr).find('#null');
+            $th.each(function () {
+                obj['name'] = $tds.eq(0).text();
+                var type = $td1.eq(0).val();
+                var nullv = $tds3.eq(0).is(':checked');
+                
+                var unique_val = $tds2.eq(0).is(':checked');
+                // console.log(JSON.stringify(unique_val)); 
+                if (unique_val == true) {
+                    unique.push(obj['name']);
+                }
+                if (nullv == false) {
+                    type = type + ' not null';
+                } else if (nullv == true) {
+                    type = type + ' null';
+                } else {
+                    if (type == 'string') {
+                        type = 'varchar(50)';
+                    } else {
+                        type;
+                    }
+                }
+                obj['type'] = type;
+                // obj['univoco'] = $tds2.eq(0).is(':checked');
+                // obj['null'] = $tds3.eq(0).is(':checked');
+            });
+            myRows.myRows.push(obj);
+        });
+        var u_val = jQuery.unique(unique)
+        // console.log(JSON.stringify(u_val));       
+        // console.log(JSON.stringify(myRows));
+        var header = 'CREATE TABLE     &nbsp  [write the table name here] &nbsp ( <br>';
+        $('#sql').append(header);
+        id = 0;
+        endrow = '&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp' + JSON.stringify(myRows.myRows[id].name).replace('\"', ' ').replace('\"', ' ') + '&nbsp' + JSON.stringify(myRows.myRows[id].type).replace('\"', '').replace('string', '  varchar\(250)').replace('\"', ' ') + "<br>";
+        $('#sql').append(endrow);
+        var i;
+        for (i = 1; i < myRows.myRows.length; i++) {
+            text = '&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp,' + JSON.stringify(myRows.myRows[i].name).replace('\"', ' ').replace('\"', ' ') + '&nbsp' + JSON.stringify(myRows.myRows[i].type).replace('\"', '').replace('string', '  varchar\(250)').replace('\"', ' ') + " <br>";
+            $('#sql').append(text);
+        }
+        if (u_val.length > 0) {
+            var constraint = '&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp ,CONSTRAINT constraint_name_to_change UNIQUE (' + u_val.toString() + ') <br>';
+            $('#sql').append(constraint);
+            var footer = ');';
+            $('#sql').append(footer);
+        }else {
+            var footer = ');';
+            $('#sql').append(footer);
+        }
+    });
+
+    function copyDivToClipboard() {
+        var range = document.createRange();
+        range.selectNode(document.getElementById("sql"));
+        window.getSelection().removeAllRanges(); // clear current selection
+        window.getSelection().addRange(range); // to select text
+        document.execCommand("copy");
+        window.getSelection().removeAllRanges();// to deselect
+    }
+
+
+
+</script>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+</html>
